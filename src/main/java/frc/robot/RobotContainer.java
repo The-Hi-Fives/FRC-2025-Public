@@ -11,6 +11,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,7 +36,7 @@ public class RobotContainer {
     //private final CommandXboxController operator = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    public ElevatorSubsystem elevator = new ElevatorSubsystem();
+    //public ElevatorSubsystem elevator = new ElevatorSubsystem();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -54,14 +55,12 @@ public class RobotContainer {
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-driver.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-driver.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-driver.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            )
-        );
+                    .withVelocityY(driver.y().getAsBoolean() ? NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0)*MaxSpeed : driver.getRightX()*MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(driver.getRightX()))); // Drive counterclockwise with negative X (left)
 
-        // reset the field-centric heading on start button press
+        // reset the field-centric heading on start button pres
         driver.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-        driver.a().onTrue(new ExtendElevator(elevator));
+        //driver.a().onTrue(new ExtendElevator(elevator));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

@@ -10,8 +10,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class Constants {
     public static final class Elevator {
-    public static final int motorID = 10;
-    public static final String motorCANBus = "canivore";
+    public static final int motorID = 20;
+    public static final String motorCANBus = "rio";
     public static final int motorPositionSlot = 0;
     public static final double maxVelocity = 2.0; // m/s
     public static final double maxAcceleration = 30.0; // m/s^2
