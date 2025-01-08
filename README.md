@@ -1,3 +1,42 @@
+# WPA KEY: frc4944radio
+
+# Controls
+
+## Driver (Slot 0)
+  - Left Stick: Swerve Strafe
+  - Right Stick: Swerve Rotate
+  - A: 
+  - B:
+  - X:
+  - Y:
+  - RT:
+  - LT:
+  - RB:
+  - LB:
+  - Up:
+  - Down:
+  - Left:
+  - Right:
+  - Start: Zero Heading
+  - Back:
+## Operator (Slot 1)
+  - Left Stick:
+  - Right Stick:
+  - A: 
+  - B:
+  - X:
+  - Y:
+  - RT:
+  - LT:
+  - RB:
+  - LB:
+  - Up:
+  - Down:
+  - Left:
+  - Right:
+  - Start:
+  - Back:
+
 # Apriltags
 
 ## BLUE
