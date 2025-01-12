@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.ExtendElevator;
 import frc.robot.generated.TunerConstants;
+import frc.robot.util.AprilTagLock;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElevatorSubsystem;
 
@@ -55,11 +56,12 @@ public class RobotContainer {
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-driver.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(driver.y().getAsBoolean() ? NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0)*MaxSpeed : driver.getRightX()*MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(driver.getRightX()))); // Drive counterclockwise with negative X (left)
+                    .withVelocityY(-driver.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(driver.y().getAsBoolean() ? (AprilTagLock.getR()*MaxSpeed) : (-driver.getRightX()*MaxSpeed)))); // Drive counterclockwise with negative X (left)
 
-        // reset the field-centric heading on start button pres
+        // reset the field-centric heading on start button press
         driver.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        // extend the elevator on a button press
         //driver.a().onTrue(new ExtendElevator(elevator));
 
         drivetrain.registerTelemetry(logger::telemeterize);
