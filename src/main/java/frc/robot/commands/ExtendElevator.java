@@ -6,14 +6,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ExampleElevatorArmSubsystem;
 
 public class ExtendElevator extends Command {
-  private final ElevatorSubsystem m_elevator;
+  private final ExampleElevatorArmSubsystem m_elevator;
 
-  public ExtendElevator(ElevatorSubsystem elevator) {
+  public ExtendElevator(ExampleElevatorArmSubsystem elevator) {
+    //Declare Subsystems
     m_elevator = elevator;
-
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elevator);
   }

@@ -11,16 +11,13 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.ExtendElevator;
 import frc.robot.generated.TunerConstants;
 import frc.robot.util.AprilTagLock;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.ElevatorSubsystem;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -37,7 +34,6 @@ public class RobotContainer {
     //private final CommandXboxController operator = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    //public ElevatorSubsystem elevator = new ElevatorSubsystem();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -61,8 +57,6 @@ public class RobotContainer {
 
         // reset the field-centric heading on start button press
         driver.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-        // extend the elevator on a button press
-        //driver.a().onTrue(new ExtendElevator(elevator));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
