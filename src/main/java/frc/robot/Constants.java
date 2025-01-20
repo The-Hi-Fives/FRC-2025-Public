@@ -7,6 +7,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.playingwithfusion.TimeOfFlight.RangingMode;
 
 public class Constants {
     public static final class ExampleElevator {
@@ -107,13 +108,19 @@ public class Constants {
           .withKG(0.28));
   }
 
-  public static final class ExampleRoller {
-    public static final int motorID = 99;
+  public static final class Intake {
+    public static final int motorID = 1;
     public static final String motorCANBus = "rio";
     public static final double minOutput = 0.0; // proportion 0 to 1
     public static final double minVoltage = 0.0; // volts -12 to 12
     public static final double exampleOutput = 0.65; // proportion 0 to 1
     public static final double exampleVoltage = 10.0; // volts -12 to 12
+
+    public static final int intakeSensorID = 1;
+    public static final RangingMode intakeSensorRange = RangingMode.Short;
+    public static final double intakeSampleTime = 0;
+
+    public static final double isNotePresentTOF = 350; // Milimeters
 
     public static final TalonFXConfiguration configuration = new TalonFXConfiguration()
     .withCurrentLimits(

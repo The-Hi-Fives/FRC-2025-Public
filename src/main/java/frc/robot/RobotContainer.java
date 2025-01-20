@@ -21,7 +21,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity.
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -53,10 +53,10 @@ public class RobotContainer {
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-driver.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-driver.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(driver.y().getAsBoolean() ? (AprilTagLock.getR()*MaxSpeed) : (-driver.getRightX()*MaxSpeed)))); // Drive counterclockwise with negative X (left)
+                    .withRotationalRate(driver.rightBumper().getAsBoolean() ? (AprilTagLock.getR()*MaxSpeed) : (-driver.getRightX()*MaxSpeed)))); // Drive counterclockwise with negative X (left)
 
         // reset the field-centric heading on start button press
-        driver.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        driver.leftTrigger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

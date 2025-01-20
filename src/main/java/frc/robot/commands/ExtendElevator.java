@@ -25,7 +25,7 @@ public class ExtendElevator extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_elevator.setHeight(Constants.Elevator.elevatorExtendHeight);
+    m_elevator.setHeight(Constants.ExampleElevator.elevatorExtendHeight);
   }
 
   // Called once the command ends or is interrupted.
