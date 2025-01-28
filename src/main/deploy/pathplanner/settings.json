@@ -3,7 +3,9 @@
   "robotLength": 0.762,
   "holonomicMode": true,
   "pathFolders": [
+    "Coral lv4, Algae to Processor, to Coral Station",
     "Leave",
+    "3 Coral Auto",
     "Reef Line Up"
   ],
   "autoFolders": [

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.341495901639344,
-        "y": 0.4826331967213116
+        "x": 4.797000000000001,
+        "y": 2.7575
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.091841444306216,
-        "y": 0.4957729050020017
+        "x": 4.7856480847703375,
+        "y": 2.507757864947425
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.1028688524590162,
-        "y": 1.022079918032788
+        "x": 1.10175,
+        "y": 0.9634999999999991
       },
       "prevControl": {
-        "x": 1.354610655737705,
-        "y": 1.0100922131147536
+        "x": 1.2898941736767187,
+        "y": 1.1281261519671304
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -127.00000000000001
+    "rotation": -126.38399999999999
   },
   "reversed": false,
-  "folder": "Coral lv4, Algae to Processor, to Coral Station",
+  "folder": "3 Coral Auto",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 120.57922687248902
   },
   "useDefaultConstraints": true
 }
