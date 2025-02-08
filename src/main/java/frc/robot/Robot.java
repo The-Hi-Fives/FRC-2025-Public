@@ -5,20 +5,44 @@
 package frc.robot;
 
 import com.ctre.phoenix6.Utils;
-
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
+  private SparkMax climbMotor;
+  private XboxController driver;
+
+  private boolean isMotorRunning = false;
+ 
+  //Wrist Extras\\ 
+ 
+  
   private final RobotContainer m_robotContainer;
 
   private final boolean kUseLimelight = false;
 
   public Robot() {
     m_robotContainer = new RobotContainer();
+
+    climbMotor = new SparkMax(5, MotorType.kBrushless);
+    
+    // Initialize Xbox controller (USB port 0)
+    driver = new XboxController(0);
+    
+    //SparkMaxConfig m_algaeIntakeRight = new SparkMaxConfig();
+    //SparkMaxConfig m_algaeIntakeLeft = new SparkMaxConfig();
+
+    //Coral Intake\\
+
+   
+   
   }
 
   @Override
@@ -39,6 +63,17 @@ public class Robot extends TimedRobot {
         m_robotContainer.drivetrain.addVisionMeasurement(llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
       }
     }
+
+    if (kUseLimelight) {
+      var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiRed("limelight");
+      if (llMeasurement != null) {
+        m_robotContainer.drivetrain.addVisionMeasurement(llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
+      }
+    }
+
+      // Display encoder position and velocity
+
+
   }
 
   @Override
@@ -73,7 +108,18 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+
+    if (driver.getBButton()) {
+      climbMotor.set(1.0);  // Full speed forward
+  } else if (driver.getXButton()) {
+      climbMotor.set(-1.0); // Full speed reverse
+  } else {
+      climbMotor.set(0);  // Stop motor
+  }
+
+    SmartDashboard.putBoolean("Motor Running", isMotorRunning);
+  }
 
   @Override
   public void teleopExit() {}

@@ -10,14 +10,24 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
 import frc.robot.util.AprilTagLock;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.Intake.IntakeIn;
+import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.subsystems.Intake.OuttakeOut;
+import frc.robot.subsystems.Intake.Intake_PID.Wrist_Intake;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -31,9 +41,15 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController driver = new CommandXboxController(0);
+    private final CommandXboxController operator = new CommandXboxController(1);
     //private final CommandXboxController operator = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final ElevatorSubsystem m_elevatorsubsystem = new ElevatorSubsystem();
+    public final IntakeSubsystem m_intakesubsystem = new IntakeSubsystem();
+    public final Wrist_Intake m_wristintake = new Wrist_Intake();
+    //public final Intakecoral m_intakecoral = new Intakecoral();
+    //public final Robot robot = new Robot();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -56,9 +72,29 @@ public class RobotContainer {
                     .withRotationalRate(driver.rightBumper().getAsBoolean() ? (AprilTagLock.getR()*MaxSpeed) : (-driver.getRightX()*MaxSpeed)))); // Drive counterclockwise with negative X (left)
 
         // reset the field-centric heading on start button press
-        driver.leftTrigger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        driver.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric())); //zero gyro
 
         drivetrain.registerTelemetry(logger::telemeterize);
+
+        //Elevator\\
+        operator.a().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); //stow
+        operator.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.45))); //lv 1
+        operator.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.65))); //lv 2
+        operator.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.85))); //lv 3
+        operator.povUp().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.02))); //lv 4
+
+        //Wrist Intake\\
+        operator.povLeft().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(0)))); //Stow
+        operator.povRight().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(20)))); //Coral Station intake
+        operator.povDown().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(90)))); //Algae intake
+
+
+        //Intake\\
+        driver.rightBumper().whileTrue(new IntakeIn(m_intakesubsystem)); //Intake
+        driver.leftBumper().whileTrue(new OuttakeOut(m_intakesubsystem)); //Outtake
+
+        
+        
     }
 
     public Command getAutonomousCommand() {
