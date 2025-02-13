@@ -12,7 +12,7 @@ import frc.robot.Constants.IntakeConstants;
 public class IntakeIn extends Command {
 
   private IntakeSubsystem intake;
-  private TalonFX intakeTalon = new TalonFX(IntakeConstants.intakeTalonID);
+   private TalonFX intakeTalon = new TalonFX(IntakeConstants.intakeTalonID);
 
   /** Creates a new IntakeNote. */
   public IntakeIn(IntakeSubsystem intake){
@@ -25,13 +25,13 @@ public class IntakeIn extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.intakeON();
+    intakeTalon.set(.8);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeTalon.set(.8);
+    
   }
 
   // Called once the command ends or is interrupted.

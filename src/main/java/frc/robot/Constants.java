@@ -32,8 +32,10 @@ public class Constants {
     public static final double elevatorPinionRadius = Units.inchesToMeters(0.0178); // Meters
     public static final double motorPositionSlot = 0;
 
-    public static final double maxElevatorHeight = 1; // Meters
+    public static final double maxElevatorHeight = 2; // Meters
     public static final double elevatorExtendHeight = 1;
+
+    //all edits were courtusy of SuperNURDS 3255
 
     public static final TalonFXConfiguration configuration = new TalonFXConfiguration()
       .withCurrentLimits(new CurrentLimitsConfigs()
@@ -90,13 +92,11 @@ public class Constants {
     public static final int intakeTalonID = 17;
     public static final String intakeTalonCANBus = "rio";
 
-    //ALL COMMENTED OUT CODE IT TEMPORARY.
+    public static final int intakeSensorID = 1;
+    public static final RangingMode intakeSensorRange = RangingMode.Short;
+    public static final double intakeSampleTime = 0;
 
-    //public static final int intakeSensorID = 1;
-    //public static final RangingMode intakeSensorRange = RangingMode.Short;
-    //public static final double intakeSampleTime = 0;
-
-    //public static final double isNotePresentTOF = 350; // Milimeters
+    public static final double isCoralPresentTOF = 350; // Milimeters
 
     public static final TalonFXConfiguration kIntakeConfiguration = new TalonFXConfiguration()
       .withCurrentLimits(new CurrentLimitsConfigs()
@@ -115,14 +115,12 @@ public class Constants {
 
 
   public static final class WristConstants {
-        public static final int armLeaderID = 14; //right
+        public static final int armLeaderID = 14; 
         public static final String armTalonCANBus = "rio";
         public static final double armGearRatio = 88.3929; // Sensor to Mechanism Ratio
 
-        public static final double ArmIntakeAngle = 10;
-
         public static final double armMinClamp = -10;
-        public static final double armMaxClamp = 360;
+        public static final double armMaxClamp = 200;
 
         public static final Rotation2d armMinAngle = Rotation2d.fromDegrees(armMinClamp);
         public static final Rotation2d armMaxAngle = Rotation2d.fromDegrees(armMaxClamp);

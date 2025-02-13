@@ -27,7 +27,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.Intake.IntakeIn;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Intake.OuttakeOut;
-import frc.robot.subsystems.Intake.Intake_PID.Wrist_Intake;
+import frc.robot.subsystems.Intake.Wrist_Intake.Wrist_Intake;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -43,11 +43,13 @@ public class RobotContainer {
     private final CommandXboxController driver = new CommandXboxController(0);
     private final CommandXboxController operator = new CommandXboxController(1);
     //private final CommandXboxController operator = new CommandXboxController(1);
+     private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+     private final IntakeIn m_intakenoteSubsystem = new IntakeIn(m_intakeSubsystem);
+     private final OuttakeOut m_intakeout = new OuttakeOut(m_intakeSubsystem);
+     private final Wrist_Intake m_wristintake = new Wrist_Intake();
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final ElevatorSubsystem m_elevatorsubsystem = new ElevatorSubsystem();
-    public final IntakeSubsystem m_intakesubsystem = new IntakeSubsystem();
-    public final Wrist_Intake m_wristintake = new Wrist_Intake();
     //public final Intakecoral m_intakecoral = new Intakecoral();
     //public final Robot robot = new Robot();
 
@@ -68,32 +70,30 @@ public class RobotContainer {
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-driver.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(driver.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(driver.rightBumper().getAsBoolean() ? (AprilTagLock.getR()*MaxSpeed) : (-driver.getRightX()*MaxSpeed)))); // Drive counterclockwise with negative X (left)
+                    .withVelocityY(driver.getLeftX() * MaxSpeed))); // Drive left with negative X (left) Remove semicolon, blue and yellow parenthasis to get apriltag tracking back
+                    //.withRotationalRate(driver.rightBumper().getAsBoolean() ? (AprilTagLock.getR()*MaxSpeed) : (-driver.getRightX()*MaxSpeed)))); // Drive counterclockwise with negative X (left)
 
         // reset the field-centric heading on start button press
         driver.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric())); //zero gyro
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-        //Elevator\\
+
+        //Elevator Positions\\
         operator.a().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); //stow
-        operator.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.45))); //lv 1
-        operator.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.65))); //lv 2
-        operator.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.85))); //lv 3
+        operator.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.42))); //lv 1
+        operator.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.62))); //lv 2
+        operator.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.82))); //lv 3
         operator.povUp().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.02))); //lv 4
 
-        //Wrist Intake\\
-        operator.povLeft().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(0)))); //Stow
-        operator.povRight().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(20)))); //Coral Station intake
-        operator.povDown().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(90)))); //Algae intake
-
+        //Wrist Positions\\
+        operator.rightBumper().onTrue(runOnce(() -> m_wristintake.setAngle(90))); //test bindings, will copy elevator pos.
+        operator.leftBumper().onTrue(runOnce(() -> m_wristintake.setAngle(30))); //test bindings, will copy elevator pos.
 
         //Intake\\
-        driver.rightBumper().whileTrue(new IntakeIn(m_intakesubsystem)); //Intake
-        driver.leftBumper().whileTrue(new OuttakeOut(m_intakesubsystem)); //Outtake
-
-        
+        operator.rightTrigger().toggleOnTrue(new IntakeIn(m_intakeSubsystem)); //intake
+        operator.leftTrigger().toggleOnTrue(new OuttakeOut(m_intakeSubsystem)); //outtake
+       
         
     }
 
