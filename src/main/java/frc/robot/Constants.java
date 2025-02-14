@@ -22,6 +22,15 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 
 public class Constants {
+
+  public static final class ClimberConstants {
+    public static final int CLIMBER_MOTOR_ID = 5;
+    public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 60;
+    public static final double CLIMBER_MOTOR_VOLTAGE_COMP = 12;
+    public static final double CLIMBER_SPEED_DOWN = -1;
+    public static final double CLIMBER_SPEED_UP = 1;
+  }
+
   public static final class ElevatorConstants {
 
     public static final int motorID = 13; //ELevator 1
@@ -158,44 +167,9 @@ public class Constants {
         public static final MotionMagicExpoVoltage armPositionControl = new MotionMagicExpoVoltage(0);
         public static final Rotation2d angleErrorTolerance = Rotation2d.fromDegrees(2.5); // Degrees
   }
-  public static final class ExampleFlywheel {
-    public static final int motorID = 99;
-    public static final String motorCANBus = "CANivore";
-    public static final int motorPositionSlot = 0;
-    public static final double maxVelocity = 2.0; // rot/s
-    public static final double maxAcceleration = 30.0; // rot/s^2
-    public static final double maxJerk = 0.0; // rot/s^3
-    public static final double minTargetVelocity = 0.0; // rot
-    public static final double maxTargetVelocity = 16.0; // rot
-    public static final double exampleTargetVelocity = 10.0; // rot
-
-    public static final TalonFXConfiguration configuration = new TalonFXConfiguration()
-      .withCurrentLimits(
-        new CurrentLimitsConfigs()
-          .withStatorCurrentLimit(80)
-          .withSupplyCurrentLimit(40)
-          .withStatorCurrentLimitEnable(false)
-          .withSupplyCurrentLimitEnable(false))
-      .withMotorOutput(
-        new MotorOutputConfigs()
-          .withNeutralMode(NeutralModeValue.Brake)
-          .withInverted(InvertedValue.Clockwise_Positive))
-      .withSlot0(
-        new Slot0Configs()
-          .withKV(0)
-          .withKA(0)
-          .withKP(15)
-          .withKI(0)
-          .withKD(0)
-          .withGravityType(GravityTypeValue.Elevator_Static)
-          .withKG(0.28));
-  }
-
 
   public static class Setpoints {
-
     public static final double ElevatorStowHeight = 0;
-
   }
     
     public static final double kConfigTimeoutSeconds = 0.1;

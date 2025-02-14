@@ -20,8 +20,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.ClimberDownCommand;
+import frc.robot.commands.ClimberUpCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.util.AprilTagLock;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.Intake.IntakeIn;
@@ -44,9 +47,8 @@ public class RobotContainer {
     private final CommandXboxController operator = new CommandXboxController(1);
     //private final CommandXboxController operator = new CommandXboxController(1);
      private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
-     private final IntakeIn m_intakenoteSubsystem = new IntakeIn(m_intakeSubsystem);
-     private final OuttakeOut m_intakeout = new OuttakeOut(m_intakeSubsystem);
      private final Wrist_Intake m_wristintake = new Wrist_Intake();
+     public final ClimberSubsystem m_climber = new ClimberSubsystem();
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final ElevatorSubsystem m_elevatorsubsystem = new ElevatorSubsystem();
@@ -87,12 +89,16 @@ public class RobotContainer {
         operator.povUp().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.02))); //lv 4
 
         //Wrist Positions\\
-        operator.rightBumper().onTrue(runOnce(() -> m_wristintake.setAngle(90))); //test bindings, will copy elevator pos.
-        operator.leftBumper().onTrue(runOnce(() -> m_wristintake.setAngle(30))); //test bindings, will copy elevator pos.
+        operator.rightBumper().onTrue(runOnce(() -> m_wristintake.setAngle(90))); //test bindings, will copy elevator pos. bindings
+        operator.leftBumper().onTrue(runOnce(() -> m_wristintake.setAngle(30))); //test bindings, will copy elevator pos. bindings
 
         //Intake\\
         operator.rightTrigger().toggleOnTrue(new IntakeIn(m_intakeSubsystem)); //intake
         operator.leftTrigger().toggleOnTrue(new OuttakeOut(m_intakeSubsystem)); //outtake
+
+        //Climber\\
+        driver.x().whileTrue(new ClimberUpCommand(m_climber)); //Climb Up
+        driver.b().whileTrue(new ClimberDownCommand(m_climber)); //Climb Down
        
         
     }

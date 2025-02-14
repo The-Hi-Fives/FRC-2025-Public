@@ -31,15 +31,12 @@ public class Robot extends TimedRobot {
   public Robot() {
     m_robotContainer = new RobotContainer();
 
-    climbMotor = new SparkMax(5, MotorType.kBrushless);
-    
-    // Initialize Xbox controller (USB port 0)
-    driver = new XboxController(0);
-    
-    //SparkMaxConfig m_algaeIntakeRight = new SparkMaxConfig();
-    //SparkMaxConfig m_algaeIntakeLeft = new SparkMaxConfig();
+    //uncomment if robonauts dosent work
 
-    //Coral Intake\\
+    //climbMotor = new SparkMax(5, MotorType.kBrushless);
+    
+
+    //driver = new XboxController(0);
 
    
    
@@ -110,15 +107,17 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    if (driver.getBButton()) {
-      climbMotor.set(1.0);  // Full speed forward
-  } else if (driver.getXButton()) {
-      climbMotor.set(-1.0); // Full speed reverse
-  } else {
-      climbMotor.set(0);  // Stop motor
-  }
+    //uncomment all if robonauts dosent work
 
-    SmartDashboard.putBoolean("Motor Running", isMotorRunning);
+  //  if (driver.getBButton()) {
+  //    climbMotor.set(1.0);  // Full speed forward
+  //} else if (driver.getXButton()) {
+  //    climbMotor.set(-1.0); // Full speed reverse
+  //} else {
+  //    climbMotor.set(0);  // Stop motor
+  //}
+
+    //SmartDashboard.putBoolean("Motor Running", isMotorRunning);
   }
 
   @Override

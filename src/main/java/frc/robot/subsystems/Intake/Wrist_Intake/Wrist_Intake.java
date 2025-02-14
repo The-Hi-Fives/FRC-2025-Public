@@ -65,8 +65,6 @@ public class Wrist_Intake extends SubsystemBase {
     m_armLeader.setControl(new VoltageOut(volts));
   }
 
-  
-  // To position for Intake, move Arm to INTAKE position
 
     public Command stowarmCommand() {
       return new RunCommand(()->this.stow(), this);
