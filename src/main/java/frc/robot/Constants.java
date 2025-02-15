@@ -58,7 +58,7 @@ public class Constants {
       .withSlot0(new Slot0Configs()
         .withKV(0.001) //originally was 0
         .withKA(0)
-        .withKP(0.013) //change to 0.5 after testing whats entered, if not problems concure
+        .withKP(0.03) //change to 0.5 after testing whats entered, if not problems concure
         .withKI(0)
         .withKD(0)
         .withKS(0.4) //new line
@@ -98,7 +98,7 @@ public class Constants {
 
  public static final class IntakeConstants {
 
-    public static final int intakeTalonID = 17;
+    public static final int intakeTalonID = 18;
     public static final String intakeTalonCANBus = "rio";
 
     public static final int intakeSensorID = 1;
@@ -128,8 +128,8 @@ public class Constants {
         public static final String armTalonCANBus = "rio";
         public static final double armGearRatio = 88.3929; // Sensor to Mechanism Ratio
 
-        public static final double armMinClamp = -10;
-        public static final double armMaxClamp = 200;
+        public static final double armMinClamp = -500;
+        public static final double armMaxClamp = 500;
 
         public static final Rotation2d armMinAngle = Rotation2d.fromDegrees(armMinClamp);
         public static final Rotation2d armMaxAngle = Rotation2d.fromDegrees(armMaxClamp);
@@ -150,9 +150,9 @@ public class Constants {
       .withSlot0(new Slot0Configs()
         .withKV(0)
         .withKA(0)
-        .withKP(0)
-        .withKI(0)
-        .withKD(1) 
+        .withKP(0.015)
+        .withKI(0.02)
+        .withKD(0) 
         .withGravityType(GravityTypeValue.Arm_Cosine)
         .withKG(0)
         .withKS(0))
