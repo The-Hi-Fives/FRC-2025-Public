@@ -72,6 +72,6 @@ public class Wrist_Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("armError", getSetpointError().getDegrees());
+    SmartDashboard.putNumber("Wrist Angle", getSetpointError().getDegrees());
   }
 }
