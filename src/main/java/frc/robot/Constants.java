@@ -111,8 +111,8 @@ public class Constants {
       .withCurrentLimits(new CurrentLimitsConfigs()
         .withStatorCurrentLimit(40)
         .withSupplyCurrentLimit(40)
-        .withStatorCurrentLimitEnable(false)
-        .withSupplyCurrentLimitEnable(false))
+        .withStatorCurrentLimitEnable(true)
+        .withSupplyCurrentLimitEnable(true))
       .withMotorOutput(new MotorOutputConfigs()
         .withNeutralMode(NeutralModeValue.Brake)
         .withInverted(InvertedValue.Clockwise_Positive));

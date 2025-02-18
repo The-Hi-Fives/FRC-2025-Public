@@ -45,6 +45,7 @@ public class RobotContainer {
 
     private final CommandXboxController driver = new CommandXboxController(0);
     private final CommandXboxController operator = new CommandXboxController(1);
+    private final CommandXboxController master = new CommandXboxController(2);
     //private final CommandXboxController operator = new CommandXboxController(1);
      private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
      private final Wrist_Intake m_wristintake = new Wrist_Intake();
@@ -81,59 +82,51 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
 
+        //DRIVER & OPERATOR CONTROLS\\
+
         //Elevator Positions\\
-        driver.a().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); //stow
-<<<<<<< HEAD
-        driver.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.26))); //Coral?
-        driver.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.39))); //lv 1
-        driver.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.62))); //lv 2
-        driver.leftTrigger().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.82))); //lv 3
-        driver.rightTrigger().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.20))); //lv 4
-
-
-        //Wrist Positions\\
-
-        driver.povUp().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(0)))); //test bindings, will copy elevator pos. bindings
-        driver.povLeft().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(15)))); //test bindings, will copy elevator pos. bindings
-        driver.povDown().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(55)))); //test bindings, will copy elevator pos. bindings
-        //driver.povDownRight().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(60)))); //test bindings, will copy elevator pos. bindings
-        driver.povRight().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(25)))); //test bindings, will copy elevator pos. bindings
-        //driver.povDownLeft().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(80)))); //test bindings, will copy elevator pos. bindings
-        //driver.povLeft().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(90)))); //test bindings, will copy elevator pos. bindings
-=======
-        driver.povUpLeft().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.39))); //lv 1
+        operator.a().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); //stow
+        operator.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.26))); //Coral Station
         operator.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.62))); //lv 2
-        driver.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.82))); //lv 3
-        //operator.rightBumper().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.02))); //lv 4
+        operator.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.82))); //lv 3
+        operator.povLeft().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.20))); //lv 4
 
         //Wrist Positions\\
-        driver.povUp().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(0)))); //test bindings, will copy elevator pos. bindings
-        driver.povUpRight().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(35)))); //test bindings, will copy elevator pos. bindings
-        driver.povRight().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(45)))); //test bindings, will copy elevator pos. bindings
-        driver.povDownRight().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(60)))); //test bindings, will copy elevator pos. bindings
-        driver.povDown().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(75)))); //test bindings, will copy elevator pos. bindings
-        driver.povDownLeft().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(80)))); //test bindings, will copy elevator pos. bindings
-        driver.povLeft().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(90)))); //test bindings, will copy elevator pos. bindings
->>>>>>> 4b0b112c5f8f2e0e225a2026e53cdba255a0b994
-        //operator.povUpLeft().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(100)))); //test bindings, will copy elevator pos. bindings
-        
-        
+        operator.povUp().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(0)))); //stow         
+        operator.povRight().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(25)))); //Coral Station
+        operator.povDown().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(55)))); //Grnd Algae
+
         //Intake\\
-<<<<<<< HEAD
         driver.leftBumper().toggleOnTrue(new IntakeIn(m_intakeSubsystem)); //intake
         driver.rightBumper().toggleOnTrue(new OuttakeOut(m_intakeSubsystem)); //outtake
 
         //Climber\\
-        //driver.rightTrigger().whileTrue(new ClimberUpCommand(m_climber)); //Climb Up
-        //ldriver.leftTrigger().whileTrue(new ClimberDownCommand(m_climber)); //Climb Down
-=======
-        driver.x().toggleOnTrue(new IntakeIn(m_intakeSubsystem)); //intake
-        driver.b().toggleOnTrue(new OuttakeOut(m_intakeSubsystem)); //outtake
-
-        //Climber\\
         driver.rightTrigger().whileTrue(new ClimberUpCommand(m_climber)); //Climb Up
         driver.leftTrigger().whileTrue(new ClimberDownCommand(m_climber)); //Climb Down
->>>>>>> 4b0b112c5f8f2e0e225a2026e53cdba255a0b994
+
+        //MASTER CONTROLS\\
+
+        //Elevator Positions\\
+        master.a().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); //stow
+        master.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.26))); //Coral Station
+        master.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.62))); //lv 2
+        master.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.82))); //lv 3
+        master.povLeft().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.20))); //lv 4
+
+        //Wrist Positions\\
+        master.povUp().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(0)))); //stow         
+        master.povRight().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(25)))); //Coral Station
+        master.povDown().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(55)))); //Grnd Algae
+
+        //Intake\\
+        master.leftBumper().toggleOnTrue(new IntakeIn(m_intakeSubsystem)); //intake
+        master.rightBumper().toggleOnTrue(new OuttakeOut(m_intakeSubsystem)); //outtake
+
+        //Climber\\
+        master.rightTrigger().whileTrue(new ClimberUpCommand(m_climber)); //Climb Up
+        master.leftTrigger().whileTrue(new ClimberDownCommand(m_climber)); //Climb Down
+ 
+
        
         
     }
