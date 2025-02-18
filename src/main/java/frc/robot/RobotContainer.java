@@ -72,8 +72,8 @@ public class RobotContainer {
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-driver.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(driver.getLeftX() * MaxSpeed))); // Drive left with negative X (left) Remove semicolon, blue and yellow parenthasis to get apriltag tracking back
-                    //.withRotationalRate(driver.rightBumper().getAsBoolean() ? (AprilTagLock.getR()*MaxSpeed) : (-driver.getRightX()*MaxSpeed)))); // Drive counterclockwise with negative X (left)
+                    .withVelocityY(driver.getLeftX() * MaxSpeed) // Drive left with negative X (left) Remove semicolon, blue and yellow parenthasis to get apriltag tracking back
+                    .withRotationalRate(driver.rightBumper().getAsBoolean() ? (AprilTagLock.getR()*MaxSpeed) : (-driver.getRightX()*MaxSpeed)))); // Drive counterclockwise with negative X (left)
 
         // reset the field-centric heading on start button press
         driver.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric())); //zero gyro
@@ -82,23 +82,33 @@ public class RobotContainer {
 
 
         //Elevator Positions\\
-        operator.a().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); //stow
-        operator.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.42))); //lv 1
-        operator.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.62))); //lv 2
-        operator.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.82))); //lv 3
-        operator.povUp().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.02))); //lv 4
+        driver.a().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); //stow
+        driver.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.26))); //Coral?
+        driver.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.39))); //lv 1
+        driver.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.62))); //lv 2
+        driver.leftTrigger().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.82))); //lv 3
+        driver.rightTrigger().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.20))); //lv 4
+
 
         //Wrist Positions\\
-        operator.rightBumper().onTrue(runOnce(() -> m_wristintake.setAngle(90))); //test bindings, will copy elevator pos. bindings
-        operator.leftBumper().onTrue(runOnce(() -> m_wristintake.setAngle(30))); //test bindings, will copy elevator pos. bindings
 
+        driver.povUp().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(0)))); //test bindings, will copy elevator pos. bindings
+        driver.povLeft().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(15)))); //test bindings, will copy elevator pos. bindings
+        driver.povDown().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(55)))); //test bindings, will copy elevator pos. bindings
+        //driver.povDownRight().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(60)))); //test bindings, will copy elevator pos. bindings
+        driver.povRight().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(25)))); //test bindings, will copy elevator pos. bindings
+        //driver.povDownLeft().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(80)))); //test bindings, will copy elevator pos. bindings
+        //driver.povLeft().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(90)))); //test bindings, will copy elevator pos. bindings
+        //operator.povUpLeft().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(100)))); //test bindings, will copy elevator pos. bindings
+        
+        
         //Intake\\
-        operator.rightTrigger().toggleOnTrue(new IntakeIn(m_intakeSubsystem)); //intake
-        operator.leftTrigger().toggleOnTrue(new OuttakeOut(m_intakeSubsystem)); //outtake
+        driver.leftBumper().toggleOnTrue(new IntakeIn(m_intakeSubsystem)); //intake
+        driver.rightBumper().toggleOnTrue(new OuttakeOut(m_intakeSubsystem)); //outtake
 
         //Climber\\
-        driver.x().whileTrue(new ClimberUpCommand(m_climber)); //Climb Up
-        driver.b().whileTrue(new ClimberDownCommand(m_climber)); //Climb Down
+        //driver.rightTrigger().whileTrue(new ClimberUpCommand(m_climber)); //Climb Up
+        //ldriver.leftTrigger().whileTrue(new ClimberDownCommand(m_climber)); //Climb Down
        
         
     }

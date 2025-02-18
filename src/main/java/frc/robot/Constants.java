@@ -58,7 +58,7 @@ public class Constants {
       .withSlot0(new Slot0Configs()
         .withKV(0.001) //originally was 0
         .withKA(0)
-        .withKP(0.013) //change to 0.5 after testing whats entered, if not problems concure
+        .withKP(0.03) //change to 0.5 after testing whats entered, if not problems concure
         .withKI(0)
         .withKD(0)
         .withKS(0.4) //new line
@@ -114,7 +114,7 @@ public class Constants {
         .withStatorCurrentLimitEnable(false)
         .withSupplyCurrentLimitEnable(false))
       .withMotorOutput(new MotorOutputConfigs()
-        .withNeutralMode(NeutralModeValue.Coast)
+        .withNeutralMode(NeutralModeValue.Brake)
         .withInverted(InvertedValue.Clockwise_Positive));
 
 
@@ -124,43 +124,43 @@ public class Constants {
 
 
   public static final class WristConstants {
-        public static final int armLeaderID = 14; 
+        public static final int armLeaderID = 18; 
         public static final String armTalonCANBus = "rio";
-        public static final double armGearRatio = 88.3929; // Sensor to Mechanism Ratio
+        public static final double armGearRatio = (88.392857142856982); // Sensor to Mechanism Ratio
 
-        public static final double armMinClamp = -10;
-        public static final double armMaxClamp = 200;
+        public static final double armMinClamp = -500;
+        public static final double armMaxClamp = 500;
 
         public static final Rotation2d armMinAngle = Rotation2d.fromDegrees(armMinClamp);
         public static final Rotation2d armMaxAngle = Rotation2d.fromDegrees(armMaxClamp);
 
         public static final TalonFXConfiguration kArmConfiguration = new TalonFXConfiguration()
       .withCurrentLimits(new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(60)
-        .withSupplyCurrentLimit(60)
-        .withStatorCurrentLimitEnable(true)
-        .withSupplyCurrentLimitEnable(true))
+        .withStatorCurrentLimit(100)
+        .withSupplyCurrentLimit(100)
+        .withStatorCurrentLimitEnable(false)
+        .withSupplyCurrentLimitEnable(false))
       .withMotorOutput(new MotorOutputConfigs()
         .withNeutralMode(NeutralModeValue.Brake)
         .withInverted(InvertedValue.CounterClockwise_Positive))
       .withMotionMagic(new MotionMagicConfigs()
-        .withMotionMagicCruiseVelocity(0.22)
-        .withMotionMagicAcceleration(0.22)
+        .withMotionMagicCruiseVelocity(0.1)
+        .withMotionMagicAcceleration(0.1)
         .withMotionMagicJerk(0))
       .withSlot0(new Slot0Configs()
-        .withKV(0)
-        .withKA(0)
-        .withKP(0)
-        .withKI(0)
-        .withKD(1) 
+        .withKV(10)//10
+        .withKA(10)//10
+        .withKP(7)//7
+        .withKI(0.1)//0.1
+        .withKD(1) //1
         .withGravityType(GravityTypeValue.Arm_Cosine)
         .withKG(0)
         .withKS(0))
       .withFeedback(new FeedbackConfigs()
       .withSensorToMechanismRatio(armGearRatio))
       .withSoftwareLimitSwitch(new SoftwareLimitSwitchConfigs()
-        .withForwardSoftLimitEnable(true)
-        .withReverseSoftLimitEnable(true)
+        .withForwardSoftLimitEnable(false)
+        .withReverseSoftLimitEnable(false)
         .withForwardSoftLimitThreshold(armMaxAngle.getRotations())
         .withReverseSoftLimitThreshold(armMinAngle.getRotations()));
 
