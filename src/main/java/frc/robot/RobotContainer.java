@@ -85,6 +85,7 @@ public class RobotContainer {
         //DRIVER & OPERATOR CONTROLS\\
 
         //Elevator Positions\\
+        driver.povDown().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(-0.05))); //stow
         operator.a().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); //stow
         operator.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.26))); //Coral Station
         operator.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.62))); //lv 2
@@ -92,9 +93,11 @@ public class RobotContainer {
         operator.povLeft().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.20))); //lv 4
 
         //Wrist Positions\\
+        driver.povUp().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(-1)))); //manual position (zero for when is gets screwed up)
         operator.povUp().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(0)))); //stow         
         operator.povRight().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(25)))); //Coral Station
         operator.povDown().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(55)))); //Grnd Algae
+        driver.povUp().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(-2))));
 
         //Intake\\
         driver.leftBumper().toggleOnTrue(new IntakeIn(m_intakeSubsystem)); //intake
