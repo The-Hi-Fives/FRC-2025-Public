@@ -11,21 +11,25 @@ import frc.robot.util.ErrorCheckUtil;
 import frc.robot.util.ErrorCheckUtil.CommonErrorNames;
 import frc.robot.util.TalonFXFactory;
 
-
 public class ElevatorSubsystem extends SubsystemBase {
 
-     //Elevator 1
+  // Elevator 1
 
-  private TalonFX elevatorLeaderTalon = configureElevatorTalon(
-      TalonFXFactory.createTalon(ElevatorConstants.motorID,
-      ElevatorConstants.motorCANBus, ElevatorConstants.configuration));
+  private TalonFX elevatorLeaderTalon =
+      configureElevatorTalon(
+          TalonFXFactory.createTalon(
+              ElevatorConstants.motorID,
+              ElevatorConstants.motorCANBus,
+              ElevatorConstants.configuration));
 
-     //Elevator 2
+  // Elevator 2
 
-  private TalonFX elevatorFollowerTalon = configureElevatorTalon(
-      TalonFXFactory.createTalon(ElevatorConstants.motorID2,
-      ElevatorConstants.motorCANBus, ElevatorConstants.configuration));
-
+  private TalonFX elevatorFollowerTalon =
+      configureElevatorTalon(
+          TalonFXFactory.createTalon(
+              ElevatorConstants.motorID2,
+              ElevatorConstants.motorCANBus,
+              ElevatorConstants.configuration));
 
   public ElevatorSubsystem() {
     elevatorFollowerTalon.setControl(ElevatorConstants.followerControl);
@@ -33,19 +37,18 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   /**
    * Move Elevator to position
-   * 
+   *
    * @param height in meters (0 to max height)
    */
   public void setHeight(double height) {
 
     elevatorLeaderTalon.setControl(
-      ElevatorConstants.elevatorPositionControl.withPosition(ElevatorConstants.elevatorMetersToRotations(height)));
+        ElevatorConstants.elevatorPositionControl.withPosition(
+            ElevatorConstants.elevatorMetersToRotations(height)));
     elevatorFollowerTalon.setControl(ElevatorConstants.followerControl);
   }
 
-  /**
-   * Move elevator to home position (0)
-   */
+  /** Move elevator to home position (0) */
   public void stow() {
     setHeight(frc.robot.Constants.Setpoints.ElevatorStowHeight);
   }
@@ -56,9 +59,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorFollowerTalon.setControl(ElevatorConstants.followerControl);
   }
 
-  /**
-   * Set all outputs to 0
-   */
+  /** Set all outputs to 0 */
   public void stop() {
 
     elevatorLeaderTalon.setControl(new DutyCycleOut(0));
@@ -67,7 +68,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   /**
    * Run elevator motors at a voltage
-   * 
+   *
    * @param volts
    */
   public void setElevatorVoltage(double volts) {
@@ -83,9 +84,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public double getSetpointError() {
-    return ElevatorConstants.elevatorRotationsToMeters(elevatorLeaderTalon.getClosedLoopError().getValue());
+    return ElevatorConstants.elevatorRotationsToMeters(
+        elevatorLeaderTalon.getClosedLoopError().getValue());
   }
-
 
   public boolean isAtSetpoint() {
     return Math.abs(getSetpointError()) < ElevatorConstants.heightErrorTolerance;
@@ -96,23 +97,31 @@ public class ElevatorSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ElevatorError", getSetpointError());
   }
 
-    private TalonFX configureElevatorTalon(TalonFX motor) {
+  private TalonFX configureElevatorTalon(TalonFX motor) {
 
     ErrorCheckUtil.checkError(
-        motor.getPosition().setUpdateFrequency(ElevatorConstants.kElevatorMidUpdateFrequency,
-            Constants.kConfigTimeoutSeconds),
+        motor
+            .getPosition()
+            .setUpdateFrequency(
+                ElevatorConstants.kElevatorMidUpdateFrequency, Constants.kConfigTimeoutSeconds),
         CommonErrorNames.UpdateFrequency(motor.getDeviceID()));
     ErrorCheckUtil.checkError(
-        motor.getClosedLoopError().setUpdateFrequency(ElevatorConstants.kElevatorMidUpdateFrequency,
-            Constants.kConfigTimeoutSeconds),
+        motor
+            .getClosedLoopError()
+            .setUpdateFrequency(
+                ElevatorConstants.kElevatorMidUpdateFrequency, Constants.kConfigTimeoutSeconds),
         CommonErrorNames.UpdateFrequency(motor.getDeviceID()));
     ErrorCheckUtil.checkError(
-        motor.getStatorCurrent().setUpdateFrequency(ElevatorConstants.kElevatorMidUpdateFrequency,
-            Constants.kConfigTimeoutSeconds),
+        motor
+            .getStatorCurrent()
+            .setUpdateFrequency(
+                ElevatorConstants.kElevatorMidUpdateFrequency, Constants.kConfigTimeoutSeconds),
         CommonErrorNames.UpdateFrequency(motor.getDeviceID()));
     ErrorCheckUtil.checkError(
-        motor.getReverseLimit().setUpdateFrequency(ElevatorConstants.kElevatorFastUpdateFrequency,
-            Constants.kConfigTimeoutSeconds),
+        motor
+            .getReverseLimit()
+            .setUpdateFrequency(
+                ElevatorConstants.kElevatorFastUpdateFrequency, Constants.kConfigTimeoutSeconds),
         CommonErrorNames.UpdateFrequency(motor.getDeviceID()));
     return motor;
   }

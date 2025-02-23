@@ -11,7 +11,7 @@ public class OuttakeOut extends Command {
   private IntakeSubsystem intake;
 
   /** Creates a new IntakeNote. */
-  public OuttakeOut(IntakeSubsystem intake){
+  public OuttakeOut(IntakeSubsystem intake) {
 
     this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -34,7 +34,7 @@ public class OuttakeOut extends Command {
     intake.intakeOFF();
   }
 
- // Returns true when the command should end.
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

@@ -1,36 +1,34 @@
 package frc.robot.subsystems.Intake;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-
+import com.playingwithfusion.TimeOfFlight;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
-import com.playingwithfusion.TimeOfFlight;
 
 public class IntakeSubsystem extends SubsystemBase {
- 
+
   public TalonFX intakeTalon = new TalonFX(IntakeConstants.intakeTalonID);
   private TimeOfFlight intakeSensor = new TimeOfFlight(4);
   private double intakerange;
 
-  
   public IntakeSubsystem() {
-    intakeSensor.setRangingMode(IntakeConstants.intakeSensorRange, IntakeConstants.intakeSampleTime);
+    intakeSensor.setRangingMode(
+        IntakeConstants.intakeSensorRange, IntakeConstants.intakeSampleTime);
     intakeSensor.setRangeOfInterest(8, 8, 12, 12);
   }
 
- public void intakeON() {
-   intakerange = intakeSensor.getRange();
-   if(intakerange > 254) {
-     intakeTalon.set(.8);
-   } else {
-     intakeTalon.set(0);
-   }
- 
- }
+  public void intakeON() {
+    intakerange = intakeSensor.getRange();
+    if (intakerange > 254) {
+      intakeTalon.set(.8);
+    } else {
+      intakeTalon.set(0);
+    }
+  }
 
   public void FeedCoral() {
-    intakeTalon.set(.8);
+    intakeTalon.set(1);
   }
 
   public void intakeOFF() {
@@ -38,7 +36,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void outakeON() {
-    intakeTalon.set(-.8);
+    intakeTalon.set(-1);
   }
 
   public boolean isCoralPresentTOF() {
@@ -61,5 +59,4 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("range intake", getRangeTOF());
   }
-
 }

@@ -1,21 +1,20 @@
 package frc.robot.subsystems.Intake;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
 
 public class IntakeIn extends Command {
 
   private IntakeSubsystem intake;
-   private TalonFX intakeTalon = new TalonFX(IntakeConstants.intakeTalonID);
+  private TalonFX intakeTalon = new TalonFX(IntakeConstants.intakeTalonID);
 
   /** Creates a new IntakeNote. */
-  public IntakeIn(IntakeSubsystem intake){
+  public IntakeIn(IntakeSubsystem intake) {
 
     this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -25,14 +24,12 @@ public class IntakeIn extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intakeTalon.set(.8);
+    intakeTalon.set(1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
@@ -40,7 +37,7 @@ public class IntakeIn extends Command {
     intake.intakeOFF();
   }
 
- // Returns true when the command should end.
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
