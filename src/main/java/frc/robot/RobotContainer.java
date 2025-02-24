@@ -141,6 +141,10 @@ public class RobotContainer {
         DriveCommands.joystickDrive(
             drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> -driver.getRightX()));
 
+    //     drive.setDefaultCommand(
+    // DriveCommands.joystickDrive(
+    //     drive, () -> -master.getLeftY(), () -> -master.getLeftX(), () -> -master.getRightX()));
+
     // // Lock to 0° when A button is held
     // driver.a().whileTrue(DriveCommands.joystickDriveAtAngle(drive, () -> -driver.getLeftY(), ()
     // -> -driver.getLeftX(), () -> new Rotation2d()));
@@ -151,6 +155,7 @@ public class RobotContainer {
     // Reset gyro to 0° when B button is pressed
 
     // Driver\\
+
     // Intake\\
     driver.a().whileTrue(new OuttakeOut(m_intakeSubsystem)); // Coral outtake, Algae intake
 
@@ -164,15 +169,7 @@ public class RobotContainer {
     // Elevator Down
 
     // Zero Drive
-    driver
-        .start()
-        .onTrue(
-            Commands.runOnce(
-                    () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
-                    drive)
-                .ignoringDisable(true));
+    driver.start().onTrue(Commands.runOnce(() -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d())), drive).ignoringDisable(true));
 
     // Stow\\
     driver.x().whileTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(10)))); // Stow
@@ -180,9 +177,7 @@ public class RobotContainer {
 
     // Stow\\
     driver.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // stow
-    driver
-        .y()
-        .whileTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(55)))); // Grnd Algae
+    driver.y().whileTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(65)))); // Grnd Algae
 
     // Operator\\
 
@@ -192,57 +187,37 @@ public class RobotContainer {
     operator.povDown().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0)));
 
     // Coral station
-    operator
-        .rightTrigger()
-        .onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(27))));
-    operator.rightTrigger().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.28)));
+    operator.rightTrigger().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(6))));
+    operator.rightTrigger().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.23)));
 
     // Level 1
-    operator.a().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(38))));
+    operator.a().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(35))));
     operator.a().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0)));
 
     // Level 2
-    operator.x().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(47))));
-    operator.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.42)));
+    operator.x().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(20))));
+    operator.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.01)));
+
+    // Level 2-3 Algae
+    operator.povUp().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(17))));
+    operator.povUp().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.47)));
 
     // Level 3
-    operator.b().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(47))));
-    operator.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.82)));
+    operator.b().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(25))));
+    operator.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.55)));
+
+    // Level 3-4 Algae
+    operator.leftTrigger().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(17))));
+    operator.leftTrigger().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.87)));
 
     // Level 4
-    operator.y().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(30))));
-    operator.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.35)));
+    operator.y().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(28))));
+    operator.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.32)));
 
     // Climber\\
-    operator.povLeft().whileTrue(new ClimberUpCommand(m_climber)); // Climb Up
+    operator.povLeft().whileTrue(new ClimberUpCommand(m_climber)); // Climb Down
 
-    operator.povRight().whileTrue(new ClimberDownCommand(m_climber)); // Climb Down
-
-    // MASTER CONTROLS\\
-
-    // Elevator Positions\\
-    master.a().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // stow
-    master.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.26))); // Coral Station
-    master.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.57))); // lv 2
-    master.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.82))); // lv 3
-    master.povLeft().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.35))); // lv 4
-
-    // Wrist Positions\\
-    master.povUp().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(0)))); // stow
-    master
-        .povRight()
-        .onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(30)))); // Coral Station
-    master
-        .povDown()
-        .onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(55)))); // Grnd Algae
-
-    // Intake\\
-    master.leftTrigger().toggleOnTrue(new IntakeIn(m_intakeSubsystem)); // intake
-    master.rightTrigger().toggleOnTrue(new OuttakeOut(m_intakeSubsystem)); // outtake
-
-    // Climber\\
-    master.rightTrigger().whileTrue(new ClimberUpCommand(m_climber)); // Climb Up
-    master.leftTrigger().whileTrue(new ClimberDownCommand(m_climber)); // Climb Down
+    operator.povRight().whileTrue(new ClimberDownCommand(m_climber)); // Climb Up
   }
 
   /**
