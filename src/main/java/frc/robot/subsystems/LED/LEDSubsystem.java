@@ -27,7 +27,7 @@ public class LEDSubsystem extends SubsystemBase {
   private static final CANdle m_candle = new CANdle(16, "rio");
 
   /*
-   * Robot LED States
+   * Robot LED States.
    */
   private static enum LEDState {
     START,
