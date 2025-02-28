@@ -17,12 +17,11 @@ import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.ClimberDownCommand;
@@ -41,8 +40,6 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.util.AprilTagLock;
-
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -56,7 +53,7 @@ public class RobotContainer {
   private final Drive drive;
 
   // Controller
-  private final CommandXboxController driver = new CommandXboxController(0);
+  private final CommandPS5Controller driver = new CommandPS5Controller(0);
   private final CommandXboxController operator = new CommandXboxController(1);
   private final CommandXboxController master = new CommandXboxController(3);
 
@@ -139,12 +136,15 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Default command, normal field-relative drive
-        drive.setDefaultCommand(
-            DriveCommands.joystickDrive(
-                drive,
-                () -> -driver.getLeftY(),
-                () -> -driver.getLeftX(),
-                () -> ((driver.y().getAsBoolean() || driver.rightBumper().getAsBoolean())) ? AprilTagLock.getR() : -driver.getRightX()));
+    // drive.setDefaultCommand(
+    //     DriveCommands.joystickDrive(
+    //         drive,
+    //         () -> -driver.getLeftY(),
+    //         () -> -driver.getLeftX(),
+    //         () ->
+    //             ((driver.y().getAsBoolean() || driver.rightBumper().getAsBoolean()))
+    //                 ? AprilTagLock.getR()
+    //                 : -driver.getRightX()));
 
     //     drive.setDefaultCommand(
     // DriveCommands.joystickDrive(
@@ -162,10 +162,10 @@ public class RobotContainer {
     // Driver\\
 
     // Intake\\
-    driver.a().whileTrue(new OuttakeOut(m_intakeSubsystem)); // Coral outtake, Algae intake
+    driver.cross().whileTrue(new OuttakeOut(m_intakeSubsystem)); // Coral outtake, Algae intake
 
     // Outtake\\
-    driver.b().whileTrue(new IntakeIn(m_intakeSubsystem)); // Coral intake, Algae Outtake
+    driver.circle().whileTrue(new IntakeIn(m_intakeSubsystem)); // Coral intake, Algae Outtake
 
     // Trim   d-pad???\\
     // Trim intake up
@@ -174,50 +174,72 @@ public class RobotContainer {
     // Elevator Down
 
     // Zero Drive
-    driver.start().onTrue(Commands.runOnce(() -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d())), drive).ignoringDisable(true));
+    // driver
+    //     .start()
+    //     .onTrue(
+    //         Commands.runOnce(
+    //                 () ->
+    //                     drive.setPose(
+    //                         new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
+    //                 drive)
+    //             .ignoringDisable(true));
 
     // Stow\\
-    driver.x().whileTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(10)))); // Stow
-    driver.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // stow
+    // driver
+    //     .x()
+    //     .whileTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(10)))); // 10,
+    // Stow
+    // driver.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // 0, stow
 
-    // Stow\\
-    driver.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // stow
-    driver.y().whileTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(65)))); // Grnd Algae
+    // // Stow\\
+    // driver.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // 0, stow
+    // driver
+    //     .y()
+    //     .whileTrue(
+    //         runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(65)))); // 65 Grnd Algae
 
     // Operator\\
 
     // Setpoints\\
     // Stow & Procesor
-    operator.povDown().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(10))));
-    operator.povDown().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0)));
+    // operator
+    //     .povDown()
+    //     .onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(10)))); // 10
+    // operator.povDown().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // 0
 
-    // Coral station
-    operator.rightTrigger().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(6))));
-    operator.rightTrigger().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.23)));
+    // // Coral station
+    operator
+        .rightTrigger()
+        .onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(6)))); // 6
+    operator.rightTrigger().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.23))); // 0.23
 
     // Level 1
-    operator.a().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(35))));
-    operator.a().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0)));
+    operator.a().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(35)))); // 35
+    operator.a().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // 0
 
     // Level 2
-    operator.x().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(20))));
-    operator.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.01)));
+    operator.x().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(20)))); // 20
+    operator.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.01))); // 0.01
 
     // Level 2-3 Algae
-    operator.povUp().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(17))));
-    operator.povUp().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.47)));
+    operator
+        .povUp()
+        .onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(20)))); // 17
+    operator.povUp().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.47))); // 0.47
 
     // Level 3
-    operator.b().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(25))));
-    operator.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.55)));
+    operator.b().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(25)))); // 25
+    operator.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.55))); // 0.55
 
     // Level 3-4 Algae
-    operator.leftTrigger().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(17))));
-    operator.leftTrigger().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.87)));
+    operator
+        .leftTrigger()
+        .onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(20)))); // 17
+    operator.leftTrigger().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.87))); // 0.87
 
     // Level 4
-    operator.y().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(28))));
-    operator.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.32)));
+    operator.y().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(32)))); // 32
+    operator.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.32))); // 1.32
 
     // Climber\\
     operator.povLeft().whileTrue(new ClimberUpCommand(m_climber)); // Climb Down

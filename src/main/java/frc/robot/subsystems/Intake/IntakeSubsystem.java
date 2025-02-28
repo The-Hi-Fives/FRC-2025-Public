@@ -1,42 +1,45 @@
 package frc.robot.subsystems.Intake;
 
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.playingwithfusion.TimeOfFlight;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.util.TalonFXFactory;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-  public TalonFX intakeTalon = new TalonFX(IntakeConstants.intakeTalonID);
-  private TimeOfFlight intakeSensor = new TimeOfFlight(4);
-  private double intakerange;
+  private TalonFX intakeTalon =
+      configureIntakeTalon(
+          TalonFXFactory.createTalon(
+              IntakeConstants.intakeTalonID,
+              IntakeConstants.intakeTalonCANBus,
+              IntakeConstants.kIntakeConfiguration));
+
+  private TimeOfFlight intakeSensor = new TimeOfFlight(IntakeConstants.intakeSensorID);
 
   public IntakeSubsystem() {
+
     intakeSensor.setRangingMode(
         IntakeConstants.intakeSensorRange, IntakeConstants.intakeSampleTime);
-    intakeSensor.setRangeOfInterest(8, 8, 12, 12);
+    intakeSensor.setRangeOfInterest(0, 0, 0, 0);
   }
 
-  public void intakeON() {
-    intakerange = intakeSensor.getRange();
-    if (intakerange > 254) {
-      intakeTalon.set(.8);
-    } else {
-      intakeTalon.set(0);
-    }
+  public void stop() {
+    intakeTalon.setControl(IntakeConstants.intakeDutyCycle.withOutput(0));
   }
 
-  public void FeedCoral() {
-    intakeTalon.set(1);
+  public void setIntakeDutyCycle(double speed) {
+    intakeTalon.setControl(IntakeConstants.intakeDutyCycle.withOutput(speed));
   }
 
-  public void intakeOFF() {
-    intakeTalon.set(0);
+  public void setIntakeTorqueControl(double amps) {
+    intakeTalon.setControl(IntakeConstants.intakeTorqueControl.withOutput(amps));
   }
 
-  public void outakeON() {
-    intakeTalon.set(-1);
+  public void setIntakeVoltage(double volts) {
+    intakeTalon.setControl(new VoltageOut(volts));
   }
 
   public boolean isCoralPresentTOF() {
@@ -44,7 +47,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public boolean isCoralCenteredTOF() {
-    return intakeSensor.getRange() != 0.0 && intakeSensor.getRange() < 100;
+    return intakeSensor.getRange() != 0.0 && intakeSensor.getRange() >= 100;
   }
 
   public double getRangeTOF() {
@@ -58,5 +61,17 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("range intake", getRangeTOF());
+  }
+
+  public void stopMotor() {
+    if (intakeSensor.getRange() <= 100) {
+      intakeTalon.set(0.01);
+    } else {
+      intakeTalon.set(0);
+    }
+  }
+
+  private TalonFX configureIntakeTalon(TalonFX motor) {
+    return motor;
   }
 }

@@ -34,12 +34,16 @@ public class IntakeIn extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.intakeOFF();
+    intake.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (intake.isCoralPresentTOF()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
