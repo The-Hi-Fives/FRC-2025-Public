@@ -47,7 +47,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public boolean isCoralCenteredTOF() {
-    return intakeSensor.getRange() != 0.0 && intakeSensor.getRange() < 100;
+    return intakeSensor.getRange() != 0.0 && intakeSensor.getRange() >= 100;
   }
 
   public double getRangeTOF() {
@@ -63,6 +63,17 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("range intake", getRangeTOF());
   }
 
+<<<<<<< HEAD
+=======
+  public void stopMotor() {
+    if (intakeSensor.getRange() <= 100) {
+      intakeTalon.set(0.01);
+    } else {
+      intakeTalon.set(0);
+    }
+  }
+
+>>>>>>> 8c538a234f65b8eab5e461acc9f420c69d2b72f8
   private TalonFX configureIntakeTalon(TalonFX motor) {
     return motor;
   }
