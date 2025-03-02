@@ -24,7 +24,7 @@ public class IntakeIn extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intakeTalon.set(1);
+    intakeTalon.set(-1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,7 +34,7 @@ public class IntakeIn extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.intakeOFF();
+    intake.stop();
   }
 
   // Returns true when the command should end.
