@@ -21,11 +21,7 @@ public class OuttakeOut extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-<<<<<<< HEAD
-    intake.setIntakeDutyCycle(1);
-=======
     intake.setIntakeDutyCycle(-1);
->>>>>>> 8c538a234f65b8eab5e461acc9f420c69d2b72f8
   }
 
   // Called every time the scheduler runs while the command is scheduled.
