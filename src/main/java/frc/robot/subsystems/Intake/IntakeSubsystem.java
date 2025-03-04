@@ -63,8 +63,6 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("range intake", getRangeTOF());
   }
 
-<<<<<<< HEAD
-=======
   public void stopMotor() {
     if (intakeSensor.getRange() <= 100) {
       intakeTalon.set(0.01);
@@ -73,7 +71,6 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   }
 
->>>>>>> 8c538a234f65b8eab5e461acc9f420c69d2b72f8
   private TalonFX configureIntakeTalon(TalonFX motor) {
     return motor;
   }
