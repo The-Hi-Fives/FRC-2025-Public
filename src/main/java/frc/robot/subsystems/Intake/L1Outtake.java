@@ -8,13 +8,13 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
 
-public class IntakeIn extends Command {
+public class L1Outtake extends Command {
 
   private IntakeSubsystem intake;
   private TalonFX intakeTalon = new TalonFX(IntakeConstants.intakeTalonID);
 
   /** Creates a new IntakeNote. */
-  public IntakeIn(IntakeSubsystem intake) {
+  public L1Outtake(IntakeSubsystem intake) {
 
     this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,7 +24,7 @@ public class IntakeIn extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intakeTalon.set(-1);
+    intakeTalon.set(0.3);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

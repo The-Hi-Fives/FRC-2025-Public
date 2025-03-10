@@ -126,16 +126,16 @@ public final class Constants {
     public static final RangingMode intakeSensorRange = RangingMode.Short;
     public static final double intakeSampleTime = 0;
 
-    public static final double isCoralPresentTOF = 100; // Milimeters
+    public static final double isCoralPresentTOF = 76.2; // Milimeters
 
     public static final TalonFXConfiguration kIntakeConfiguration =
         new TalonFXConfiguration()
             .withCurrentLimits(
                 new CurrentLimitsConfigs()
-                    .withStatorCurrentLimit(80)
-                    .withSupplyCurrentLimit(80)
-                    .withStatorCurrentLimitEnable(false)
-                    .withSupplyCurrentLimitEnable(false))
+                    .withStatorCurrentLimit(200)
+                    .withSupplyCurrentLimit(200)
+                    .withStatorCurrentLimitEnable(true)
+                    .withSupplyCurrentLimitEnable(true))
             .withMotorOutput(
                 new MotorOutputConfigs()
                     .withNeutralMode(NeutralModeValue.Brake)
