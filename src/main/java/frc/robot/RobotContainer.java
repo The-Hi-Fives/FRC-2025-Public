@@ -29,6 +29,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.Intake.IntakeIn;
+import frc.robot.subsystems.Intake.IntakeOff;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Intake.L1Intake;
 import frc.robot.subsystems.Intake.L1Outtake;
@@ -132,7 +133,6 @@ public class RobotContainer {
         Commands.runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(5))));
     NamedCommands.registerCommand(
         "CoralStationEle", Commands.runOnce(() -> m_elevatorsubsystem.setHeight(0.23)));
-
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
   }
 
@@ -174,7 +174,6 @@ public class RobotContainer {
 
     // Outtake\\
     driver.b().whileTrue(new IntakeIn(m_intakeSubsystem)); // Coral intake, Algae Outtake
-
     driver.rightTrigger().whileTrue(new L1Outtake(m_intakeSubsystem)); // AI-CO
     driver.leftTrigger().whileTrue(new L1Intake(m_intakeSubsystem)); // AO-CI
     // Trim   d-pad???\\
@@ -246,7 +245,6 @@ public class RobotContainer {
     // Level 4
     operator.y().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(32)))); // 32
     operator.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.34))); // 1.34
-
     // Climber\\
     // operator.povLeft().whileTrue(new ClimberUpCommand(m_climber)); // Climb Down
 
