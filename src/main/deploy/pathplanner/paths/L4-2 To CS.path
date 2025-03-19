@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.91,
+        "y": 3.02
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.533360655737705,
+        "y": 2.048995901639344
+      },
+      "isLocked": false,
+      "linkedName": "L4-2Score"
+    },
+    {
+      "anchor": {
+        "x": 0.31,
+        "y": 0.885
+      },
+      "prevControl": {
+        "x": 0.5180125735783847,
+        "y": 1.0236750490654214
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Coral Station - DPOV-R"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -130.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 90.0,
+    "rotation": 118.00000000000001
+  },
+  "useDefaultConstraints": true
+}

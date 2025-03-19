@@ -31,6 +31,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.Intake.IntakeIn;
 import frc.robot.subsystems.Intake.IntakeOff;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.subsystems.Intake.L1Intake;
 import frc.robot.subsystems.Intake.L1Outtake;
 import frc.robot.subsystems.Intake.OuttakeOut;
 import frc.robot.subsystems.Intake.Wrist_Intake.Wrist_Intake;
@@ -108,22 +109,30 @@ public class RobotContainer {
     configureButtonBindings();
     NamedCommands.registerCommand("Intake", new IntakeIn(m_intakeSubsystem));
     NamedCommands.registerCommand("Outtake", new OuttakeOut(m_intakeSubsystem));
-    NamedCommands.registerCommand("IntakeOff", new IntakeOff(m_intakeSubsystem));
+    NamedCommands.registerCommand("IntakeOff", Commands.runOnce(() -> m_intakeSubsystem.stop()));
+    NamedCommands.registerCommand("TM-AI/CO", new L1Outtake(m_intakeSubsystem));
+    NamedCommands.registerCommand("TM-AO/CI", new L1Intake(m_intakeSubsystem));
     NamedCommands.registerCommand(
-        "L2", Commands.runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(20))));
+        "WristL2", Commands.runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(20))));
     NamedCommands.registerCommand(
         "L2Ele", Commands.runOnce(() -> m_elevatorsubsystem.setHeight(0.08)));
     NamedCommands.registerCommand(
-        "L4", Commands.runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(35))));
+        "WristL4", Commands.runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(35))));
     NamedCommands.registerCommand(
-        "L4Ele", Commands.runOnce(() -> m_elevatorsubsystem.setHeight(1.34)));
+        "L4Ele", Commands.runOnce(() -> m_elevatorsubsystem.setHeight(1.32)));
     NamedCommands.registerCommand(
-        "Stow", Commands.runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(10))));
+        "StowWrist", Commands.runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(5))));
     NamedCommands.registerCommand(
         "StowEle", Commands.runOnce(() -> m_elevatorsubsystem.setHeight(0)));
-    // NamedCommands.registerCommand("Coral Station", new CoralStation(m_wristintake,
-    // m_elevatorsubsystem));
-
+    NamedCommands.registerCommand(
+        "WristL3", Commands.runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(20))));
+    NamedCommands.registerCommand(
+        "L3Ele", Commands.runOnce(() -> m_elevatorsubsystem.setHeight(0.56)));
+    NamedCommands.registerCommand(
+        "CoralStationWrist",
+        Commands.runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(5))));
+    NamedCommands.registerCommand(
+        "CoralStationEle", Commands.runOnce(() -> m_elevatorsubsystem.setHeight(0.23)));
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
   }
 
@@ -165,8 +174,8 @@ public class RobotContainer {
 
     // Outtake\\
     driver.b().whileTrue(new IntakeIn(m_intakeSubsystem)); // Coral intake, Algae Outtake
-
-    driver.rightTrigger().whileTrue(new L1Outtake(m_intakeSubsystem));
+    driver.rightTrigger().whileTrue(new L1Outtake(m_intakeSubsystem)); // AI-CO
+    driver.leftTrigger().whileTrue(new L1Intake(m_intakeSubsystem)); // AO-CI
     // Trim   d-pad???\\
     // Trim intake up
     // Trim intake down
@@ -185,26 +194,23 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     // Stow\\
-    driver
-        .x()
-        .whileTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(10)))); // 10, Stow
-    driver.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // 0, stow
+    // driver.x().whileTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(10)))); //
+    // 10, Stow
+    // driver.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // 0, stow
 
     // Grnd Algae\\
-    driver.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // 0, stow
+    driver.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // 0, stow
     driver
-        .y()
+        .x()
         .whileTrue(
-            runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(65)))); // 65 Grnd Algae
+            runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(55)))); // 55 Grnd Algae
 
     // Operator\\
 
     // Setpoints\\
     // Stow & Procesor
-    operator
-        .povDown()
-        .onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(10)))); // 10
-    operator.povDown().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // 0
+    driver.y().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(10)))); // 10
+    driver.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0))); // 0
 
     // Coral station
     operator
@@ -218,22 +224,27 @@ public class RobotContainer {
 
     // Level 2
     operator.x().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(20)))); // 20
-    operator.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.10))); // 0.08
+    operator.x().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.08))); // 0.08
 
-    // Level 2-3 Algae and L3 Coral
-    operator.b().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(24)))); // 24
-    operator.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.54))); // 0.52
+    // Level 2-3 Algae
+    operator
+        .povUp()
+        .onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(34)))); // 34
+    operator.povUp().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.55))); // 0.55
 
-    // Level 3-4 Algae
+    // Level 3
+    operator.b().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(34)))); // 34
+    operator.b().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.64))); // 0.64
+
+    // Level 3-4 Algaex
     operator
         .leftTrigger()
-        .onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(23)))); // 17
-    operator.leftTrigger().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.91))); // 0.87
+        .onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(22)))); // 22
+    operator.leftTrigger().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(0.85))); // 0.85
 
     // Level 4
-    operator.y().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(35)))); // 32
-    operator.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.34))); // 1.32
-
+    operator.y().onTrue(runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(32)))); // 32
+    operator.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.34))); // 1.34
     // Climber\\
     // operator.povLeft().whileTrue(new ClimberUpCommand(m_climber)); // Climb Down
 

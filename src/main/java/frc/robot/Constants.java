@@ -175,11 +175,11 @@ public final class Constants {
                     .withMotionMagicJerk(0))
             .withSlot0(
                 new Slot0Configs()
-                    .withKV(1) // 15
-                    .withKA(360) // 1
-                    .withKP(100) // 4.5, 1.65
-                    .withKI(0.1) // 0
-                    .withKD(1) // 0
+                    .withKV(0) // 0
+                    .withKA(0) // 0
+                    .withKP(70) // 70
+                    .withKI(0.05) // 0.05
+                    .withKD(0.1) // 0.1
                     .withGravityType(GravityTypeValue.Arm_Cosine)
                     .withKG(0)
                     .withKS(0))
