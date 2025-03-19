@@ -24,12 +24,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.AutoAlign;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.Intake.IntakeIn;
-import frc.robot.subsystems.Intake.IntakeOff;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Intake.L1Intake;
 import frc.robot.subsystems.Intake.L1Outtake;
@@ -55,7 +55,7 @@ public class RobotContainer {
   private final Drive drive;
 
   // Controller
-  private final CommandXboxController driver = new CommandXboxController(0);
+  public static CommandXboxController driver = new CommandXboxController(0);
   private final CommandXboxController operator = new CommandXboxController(1);
 
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
@@ -133,6 +133,7 @@ public class RobotContainer {
         Commands.runOnce(() -> m_wristintake.setAngle(Rotation2d.fromDegrees(5))));
     NamedCommands.registerCommand(
         "CoralStationEle", Commands.runOnce(() -> m_elevatorsubsystem.setHeight(0.23)));
+    NamedCommands.registerCommand("Align", new AutoAlign(drive).withTimeout(1));
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
   }
 
@@ -247,7 +248,6 @@ public class RobotContainer {
     operator.y().onTrue(runOnce(() -> m_elevatorsubsystem.setHeight(1.34))); // 1.34
     // Climber\\
     // operator.povLeft().whileTrue(new ClimberUpCommand(m_climber)); // Climb Down
-
     // operator.povRight().whileTrue(new ClimberDownCommand(m_climber)); // Climb Up
   }
 
